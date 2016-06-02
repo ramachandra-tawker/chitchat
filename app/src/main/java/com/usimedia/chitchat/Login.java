@@ -20,12 +20,20 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class Login extends AppCompatActivity {
+    private static final String CONTACTS_SERVICE_URL = "http:192.168.1.3:8000/api/contacts";
+    private  static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    private static final OkHttpClient HTTP_CLIENT = new OkHttpClient();
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +60,7 @@ public class Login extends AppCompatActivity {
     {
         String username = email;
         String password =  pass;
-        String url = "http://192.168.2.174:8000/login";
+        String url = "http://192.168.1.7:8000/login";
         RequestBody request = new FormBody.Builder()
                 .add("email", username)
                 .add("password", password)
@@ -88,20 +96,22 @@ public class Login extends AppCompatActivity {
 
         protected void onPostExecute(String result) {
             JSONObject jsonResponse = null;
-            boolean isOkay;
+            boolean isSuccess = false;
             String username = null;
             try {
-                jsonResponse = new JSONObject(result);
-                isOkay = jsonResponse.getBoolean("response");
-                username = jsonResponse.getString("nickname");
+                if(result != null) {
+                    jsonResponse = new JSONObject(result);
+                    isSuccess = jsonResponse.getBoolean("response");
+                    username = jsonResponse.getString("nickname");
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
-                isOkay = false;
+               // isSuccess = false;
             }
 
-            String message = isOkay ? "Welcome ".concat(username) : "Login Failed";
+            String message = isSuccess ? "Welcome ".concat(username) : "Login Failed";
             Toast.makeText(Login.this, message, Toast.LENGTH_LONG).show();
-            if (isOkay == true){
+            if (isSuccess == true){
                 Intent contact = new Intent(Login.this,Contacts.class);
                 startActivity(contact);
             }

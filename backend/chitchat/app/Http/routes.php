@@ -15,5 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('login','Login@login');
-Route::post('login','Login@login');
+Route::get('/login','Login@login');
+Route::post('/login','Login@login');
+
+Route::post('/Contact','Contact@resolveContacts');
