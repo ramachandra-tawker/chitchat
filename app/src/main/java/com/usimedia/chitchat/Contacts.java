@@ -1,6 +1,7 @@
 package com.usimedia.chitchat;
 
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -167,7 +170,7 @@ public class Contacts extends AppCompatActivity {
 
        }
         @Override
-        protected void onPostExecute(List<ChatContacts> result){
+        protected void onPostExecute(final List<ChatContacts> result){
           /*  final ArrayAdapter<ChatContacts> contactlistadapter = new ArrayAdapter<ChatContacts>(
                     Contacts.this,
                     android.R.layout.simple_list_item_1,
@@ -183,11 +186,19 @@ public class Contacts extends AppCompatActivity {
             );
 
 
-
             //arrayadapter to appear
             ListView contactlistview = (ListView) findViewById(R.id.listView_activity_contacts);
             //showing the adapter in the listview variable
             contactlistview.setAdapter(contactlist);
+
+            contactlistview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent toContactProfileActivity = new Intent(Contacts.this,ContactProfile.class);
+                    toContactProfileActivity.putExtra("chat_contact", result.get(position) );
+                    startActivity(toContactProfileActivity);
+                }
+            });
         }
     }
 

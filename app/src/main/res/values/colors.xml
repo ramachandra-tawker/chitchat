@@ -2,4 +2,5 @@
 <resources>
     <item name="primary_bgcolor" type="color">#2C4B8F</item>
     <item name="login_hi" type="color">#A7B5D4</item>
+    <item name="hello_text" type="color">#FFFF544B</item>
 </resources>
